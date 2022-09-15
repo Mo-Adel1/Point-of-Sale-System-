@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="POSDEMOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Company" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SalesBills" Relationship="POSDEMOModel.FK_SalesBill_Customers" FromRole="Customer" ToRole="SalesBill" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CategoryId" Type="Int32" />
+    <NavigationProperty Name="Category" Relationship="POSDEMOModel.FK_Products_Category" FromRole="Product" ToRole="Category" />
+  </EntityType>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Company" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="POSDEMOEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customers" EntityType="Self.Customer" />
+    <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="Categories" EntityType="POSDEMOModel.Category" />
+    <EntitySet Name="sysdiagrams" EntityType="POSDEMOModel.sysdiagram" />
+    <AssociationSet Name="FK_Products_Category" Association="POSDEMOModel.FK_Products_Category">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <EntitySet Name="SalesBills" EntityType="POSDEMOModel.SalesBill" />
+    <EntitySet Name="SalesBillDetails" EntityType="POSDEMOModel.SalesBillDetail" />
+    <AssociationSet Name="FK_SalesBill_Customers" Association="POSDEMOModel.FK_SalesBill_Customers">
+      <End Role="Customer" EntitySet="Customers" />
+      <End Role="SalesBill" EntitySet="SalesBills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SalesBillDetails_SalesBill" Association="POSDEMOModel.FK_SalesBillDetails_SalesBill">
+      <End Role="SalesBill" EntitySet="SalesBills" />
+      <End Role="SalesBillDetail" EntitySet="SalesBillDetails" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Products" Relationship="POSDEMOModel.FK_Products_Category" FromRole="Category" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Products_Category">
+    <End Type="POSDEMOModel.Category" Role="Category" Multiplicity="0..1" />
+    <End Type="POSDEMOModel.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="SalesBill">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerId" Type="Int32" />
+    <Property Name="Total" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="Discount" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="TotalAfterDiscount" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="Customer" Relationship="POSDEMOModel.FK_SalesBill_Customers" FromRole="SalesBill" ToRole="Customer" />
+    <NavigationProperty Name="SalesBillDetails" Relationship="POSDEMOModel.FK_SalesBillDetails_SalesBill" FromRole="SalesBill" ToRole="SalesBillDetail" />
+  </EntityType>
+  <EntityType Name="SalesBillDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SalesBillId" Type="Int32" />
+    <Property Name="ProductId" Type="Int32" />
+    <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="SalesBill" Relationship="POSDEMOModel.FK_SalesBillDetails_SalesBill" FromRole="SalesBillDetail" ToRole="SalesBill" />
+  </EntityType>
+  <Association Name="FK_SalesBill_Customers">
+    <End Type="POSDEMOModel.Customer" Role="Customer" Multiplicity="0..1" />
+    <End Type="POSDEMOModel.SalesBill" Role="SalesBill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SalesBill">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SalesBillDetails_SalesBill">
+    <End Type="POSDEMOModel.SalesBill" Role="SalesBill" Multiplicity="0..1" />
+    <End Type="POSDEMOModel.SalesBillDetail" Role="SalesBillDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SalesBill">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SalesBillDetail">
+        <PropertyRef Name="SalesBillId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
